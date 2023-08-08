@@ -98,8 +98,8 @@ Project Link: [https://github.com/SilasRodrigues19/QuickNotes](https://github.co
 [license-shield]: https://img.shields.io/github/license/SilasRodrigues19/QuickNotes.svg?style=for-the-badge
 [license-url]: https://github.com/SilasRodrigues19/QuickNotes/blob/master/LICENSE
 [license-url]: https://github.com/SilasRodrigues19/QuickNotes/blob/master/LICENSE.txt
-[product-screenshot]: ./public/screenshots/light-color-scheme.png
-[product-screenshot2]: ./public/screenshots/dark-color-scheme.png
+[product-screenshot]: ./assets/img/screenshots/light-color-scheme.png
+[product-screenshot2]: ./assets/img/screenshots/dark-color-scheme.png
 [project-link]: https://quick-notes-one.vercel.app/
 
 <br><hr>
