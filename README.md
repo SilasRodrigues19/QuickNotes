@@ -44,7 +44,7 @@
 
 | Light | Dark |
 | -------- | -------- |
-| [![Preview][product-screenshot]]([project-link]) | [![Preview][product-screenshot2]]([project-link]) |
+| [![Preview][product-screenshot]][project-link] | [![Preview][product-screenshot2]][project-link] |
 
 <hr>
 
