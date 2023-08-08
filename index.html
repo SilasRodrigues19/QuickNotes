@@ -3,8 +3,25 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#fff">
+  <meta name="color-scheme" content="light dark">
+  <meta name="author" content="Silas Rodrigues">
+  <meta name="description" content="todo list named as quick notes, built with tailwind and javascript" />
+  <meta name="keywords" content="todo, javascript, tailwind, localstorage, tasks">
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="quick notes" />
+  <meta property="og:description" content="todo list named as quick notes, built with tailwind and javascript" />
+  <meta property="og:url" content="https://quick-notes-one.vercel.app/" />
+  <meta property="og:site_name" content="Quick Notes" />
+  <meta property="og:type" content="article" />
+  <meta name="twitter:creator" content="@Jinuye1" />
+  <meta name="twitter:title" content="quick notes" />
+  <meta name="twitter:description" content="todo list named as quick notes, built with tailwind and javascript" />
+  <link rel="shortcut icon" href="/logo.svg" type="image/svg+xml">
   <title>Quick Notes</title>
+  <link rel="canonical" href="https://quick-notes-one.vercel.app/">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -14,7 +31,10 @@
           colors: {
             'bg-primary-light': '#1b2430',
             'bg-primary-dark': '#ebe9e0',
-          }
+          },
+          fontFamily: {
+            sans: ['"Open Sans"', 'sans-serif'],
+          },
         }
       }
     }
@@ -24,89 +44,55 @@
 <body class="bg-primary-light dark:bg-primary-dark">
 
   <main class="min-h-screen h-full w-full bg-white dark:bg-gray-800">
-    <div class="flex justify-end p-4">
+    <div class="flex justify-end p-4 shadow-md mb-8">
       <button id="darkModeBtn" class="p-2 focus:outline-none">
-        <img src="moon.svg" alt="Tema Light" class="dark:hidden" id="lightIcon">
-        <img src="sun.svg" alt="Tema Dark" class="dark:block hidden" id="darkIcon">
+        <img src="./assets/img/moon.svg" alt="Tema Light" class="dark:hidden" id="lightIcon">
+        <img src="./assets/img/sun.svg" alt="Tema Dark" class="dark:block hidden" id="darkIcon">
       </button>
     </div>
-  
+
     <div class="container mx-auto p-4">
-      <h1 class="text-2xl font-bold mb-4 dark:text-white">My notes</h1>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+      <h1 class="text-2xl font-bold mb-4 text-zinc-600 font-sans tracking-widest dark:text-zinc-100">
+        Quick Notes
+      </h1>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4" id="cards-container">
         <div
-          class="bg-blue-500 text-white p-4 rounded-md flex items-center justify-center cursor-pointer hover:bg-blue-600 transition-colors duration-300">
-          <span class="text-4xl font-bold">+</span>
+          class="bg-sky-500 text-white p-4 rounded-md flex items-center justify-center cursor-pointer hover:bg-sky-600 transition-colors duration-300 sm:h-20 md:h-40" id="plusCard">
+          <span class="text-4xl font-bold">
+            <span class="iconify" data-icon="bx:book-add"></span>
+          </span>
         </div>
-  
-        <div class="bg-white dark:bg-gray-900 p-4 rounded-md shadow-md">
-          <h2 class="text-lg font-bold mb-2 dark:text-white">Static Note 1 title</h2>
-          <p class="text-gray-600 dark:text-gray-300">Static Note 1 description</p>
-        </div>
-  
-        <div class="bg-white dark:bg-gray-900 p-4 rounded-md shadow-md">
-          <h2 class="text-lg font-bold mb-2 dark:text-white">Static Note 2 title</h2>
-          <p class="text-gray-600 dark:text-gray-300">Static Note 2 description</p>
-        </div>
-  
-        <div class="bg-white dark:bg-gray-900 p-4 rounded-md shadow-md">
-          <h2 class="text-lg font-bold mb-2 dark:text-white">Static Note 3 title</h2>
-          <p class="text-gray-600 dark:text-gray-300">Static Note 3 description</p>
-        </div>
-        </div>
+      </div>
     </div>
-  
+
     <div class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden" id="popup-container">
       <div class="bg-white dark:bg-gray-900 p-6 rounded-md shadow-md max-w-sm">
-        <h2 class="text-xl font-bold mb-4 dark:text-white">Add</h2>
+        <h2 class="text-xl font-bold mb-4 dark:text-white" id="modal-title">Add</h2>
         <div class="mb-4">
           <label for="title" class="block font-semibold text-gray-700 dark:text-gray-300">Title:</label>
-          <input type="text" id="title" class="w-full p-2 border rounded-md dark:bg-gray-800 dark:text-white">
+          <input type="text" id="title" class="w-full p-2 border rounded-md dark:bg-gray-800 dark:text-white outline-none focus:ring-2 ring-zinc-500 dark:ring-zinc-100">
         </div>
         <div class="mb-4">
           <label for="description" class="block font-semibold text-gray-700 dark:text-gray-300">Description:</label>
-          <textarea id="description" class="w-full p-2 border rounded-md dark:bg-gray-800 dark:text-white"></textarea>
+          <textarea id="description" class="w-full p-2 border rounded-md dark:bg-gray-800 dark:text-white outline-none focus:ring-2 ring-zinc-500 dark:ring-zinc-100"></textarea>
         </div>
-        <button class="bg-blue-500 text-white px-4 py-2 rounded-md" id="save-btn">Save</button>
+        <div class="flex items-center justify-between gap-2">
+          <button class="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border-2 border-sky-200 font-semibold text-sky-500 hover:text-white hover:bg-sky-500 hover:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800" id="save-btn">
+            Save
+          </button>
+          <button
+            class="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border-2 border-red-200 font-semibold text-red-500 hover:text-white hover:bg-red-500 hover:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-200 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"  id="close-modal">
+              Close
+          </button>
+        </div>
       </div>
     </div>
 
   </main>
 
-  <!-- Adicione scripts para mostrar e esconder o popup quando clicar no botão "+" -->
-  <script>
-    const plusBtn = document.querySelector('.bg-blue-500');
-    const popupContainer = document.getElementById('popup-container');
-    const saveBtn = document.getElementById('save-btn');
-    const darkModeBtn = document.getElementById('darkModeBtn');
-
-    plusBtn.addEventListener('click', () => {
-      popupContainer.classList.remove('hidden');
-    });
-
-    saveBtn.addEventListener('click', () => {
-      // Lógica para salvar a nota
-      // ...
-
-      // Fechar o popup após salvar
-      popupContainer.classList.add('hidden');
-    });
-
-    // Adicione o script para alternar entre os modos dark e light
-    darkModeBtn.addEventListener('click', () => {
-        const body = document.body;
-        body.classList.toggle('dark');
-
-        // Alternar entre os ícones do botão dark/light
-        if (body.classList.contains('dark')) {
-          lightIcon.style.display = 'none';
-          darkIcon.style.display = 'block';
-        } else {
-          lightIcon.style.display = 'block';
-          darkIcon.style.display = 'none';
-        }
-      });
-  </script>
+  <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+  <script src="./assets/js/script.js"></script>
 
 </body>
 
