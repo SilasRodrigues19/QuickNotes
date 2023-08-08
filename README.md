@@ -17,7 +17,7 @@
   <p align="center">
     A simple note organizer
     <br />
-    <a href="[https://quick-notes-one.vercel.app/]">Demo</a>
+    <a href="https://quick-notes-one.vercel.app/">Demo</a>
     <a href="https://github.com/SilasRodrigues19/QuickNotes/issues">Report Bug</a>
   </p>
 </p>
