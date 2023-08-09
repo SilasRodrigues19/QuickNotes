@@ -1,42 +1,63 @@
 const plusCard = document.querySelector('#plusCard');
 const popupContainer = document.querySelector('#popup-container');
 const saveBtn = document.querySelector('#save-btn');
-const closeModalButton = document.querySelector('#close-modal');
+const closeModalButton = document.querySelectorAll('.close-modal');
 const darkModeBtn = document.querySelector('#darkModeBtn');
 const cardsContainer = document.querySelector('#cards-container');
+const modalTitle = document.querySelector('#modal-title');
+const noteTitle = document.querySelector('#title');
+const noteDescription = document.querySelector('#description');
+
+function showFeedback() {
+  const feedbackContainer = document.querySelector('#feedback-container');
+  const feedbackDuration = 3000;
+
+  feedbackContainer.classList.remove('hidden');
+
+  setTimeout(() => {
+    feedbackContainer.classList.add('hidden');
+  }, feedbackDuration);
+}
 
 plusCard.addEventListener('click', () => {
   popupContainer.classList.remove('hidden');
-  document.querySelector('#modal-title').textContent = 'Add';
+  modalTitle.textContent = 'Add your note';
   saveBtn.dataset.mode = 'add';
-  document.querySelector('#title').value = '';
-  document.querySelector('#description').value = '';
+  noteTitle.value = '';
+  noteDescription.value = '';
 });
 
 saveBtn.addEventListener('click', () => {
-  const title = document.querySelector('#title').value;
-  const description = document.querySelector('#description').value;
-  const isDarkMode = document.body.classList.contains('dark');
+  const title = noteTitle.value;
+  const description = noteDescription.value;
 
   if (title && description) {
     if (saveBtn.dataset.mode === 'add') {
-      const card = createCard(title, description, isDarkMode);
+      const card = createCard(title, description);
       cardsContainer.appendChild(card);
+      showFeedback();
     } else if (saveBtn.dataset.mode === 'edit') {
       const editedCardId = saveBtn.dataset.card;
       const editedCard = document.querySelector(
         `[data-card-id="${editedCardId}"]`
       );
-      editCard(editedCard, title, description, isDarkMode);
+      editCard(editedCard, title, description);
     }
     updateLocalStorage(); 
     popupContainer.classList.add('hidden');
-  }
+    return
+  } 
+
+  if(noteTitle.value.trim() === '') noteTitle.focus();
+
 });
 
-closeModalButton.addEventListener('click', () => {
-  popupContainer.classList.add('hidden');
-});
+closeModalButton.forEach((close) => {
+  close.addEventListener('click', () => {
+    popupContainer.classList.add('hidden');
+  });
+})
+
 
 document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape') {
@@ -44,23 +65,29 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
-const createCard = (title, description, isDarkMode) => {
+const createCard = (title, description) => {
   const card = document.createElement('div');
-  card.className = 'bg-white dark:bg-zinc-200 p-4 rounded-md shadow-md';
+  card.className =
+    'bg-primary-light dark:bg-primary-dark p-4 rounded-md rounded-md shadow-md hover:shadow-lg cursor-pointer';
   card.setAttribute('data-card-id', Date.now());
+
+  card.addEventListener('click', () => openEditModal(title, description, card));
 
   const titleElement = document.createElement('h2');
   titleElement.className =
-    'text-lg font-bold text-zinc-500 mb-2 truncate';
+    'text-lg font-semibold  text-gray-800 dark:text-gray-200 mb-2 truncate';
   titleElement.textContent = title;
 
   const descriptionElement = document.createElement('p');
-  descriptionElement.className = 'text-zinc-400 truncate';
+  descriptionElement.className = 'text-gray-600 dark:text-gray-400 truncate';
   descriptionElement.textContent = description;
 
+  const wrapperButtons = document.createElement('div');
+  wrapperButtons.className = 'flex items-center gap-2 my-4';
+  
   const editButton = document.createElement('button');
   editButton.className =
-    'bg-blue-500 text-white px-2 py-1 mt-4 rounded-md mr-2';
+    'bg-blue-500 text-white px-3 py-1 rounded-md mr-2 hover:bg-blue-600 ring-2 ring-blue-400 outline-none transition-colors';
   const editIcon = document.createElement('span');
   editIcon.className = 'iconify';
   editIcon.setAttribute('data-icon', 'eva:edit-2-outline');
@@ -71,48 +98,80 @@ const createCard = (title, description, isDarkMode) => {
   });
 
   const removeButton = document.createElement('button');
-  removeButton.className = 'bg-red-500 text-white px-2 py-1 mt-4 rounded-md';
+  removeButton.className =
+    'bg-red-500 text-white px-3 py-1 rounded-md mr-2 hover:bg-red-600 ring-2 ring-red-400 outline-none transition-colors';
   const removeIcon = document.createElement('span');
   removeIcon.className = 'iconify';
   removeIcon.setAttribute('data-icon', 'ic:baseline-delete');
   removeIcon.setAttribute('data-inline', 'false');
   removeButton.appendChild(removeIcon);
-  removeButton.addEventListener('click', () => {
+  removeButton.addEventListener('click', e => {
+    e.stopPropagation();
     openDeleteConfirmationModal(title, card);
   });
 
   card.appendChild(titleElement);
   card.appendChild(descriptionElement);
-  card.appendChild(editButton);
-  card.appendChild(removeButton);
+  card.appendChild(wrapperButtons);
+  wrapperButtons.appendChild(editButton);
+  wrapperButtons.appendChild(removeButton);
 
   return card;
 }
 
-const editCard = (card, newTitle, newDescription, isDarkMode) => {
+const editCard = (card, newTitle, newDescription) => {
   const titleElement = card.querySelector('h2');
   const descriptionElement = card.querySelector('p');
   titleElement.textContent = newTitle;
   descriptionElement.textContent = newDescription;
-  card.classList.toggle('dark:bg-gray-900', isDarkMode);
 }
 
 const openEditModal = (title, description, card) => {
   popupContainer.classList.remove('hidden');
-  document.querySelector('#title').value = title;
-  document.querySelector('#description').value = description;
-  document.querySelector('#modal-title').textContent = 'Edit';
+  noteTitle.value = title;
+  noteDescription.value = description;
+  modalTitle.textContent = `Editing ${title}`;
   saveBtn.dataset.mode = 'edit';
   saveBtn.dataset.card = card.getAttribute('data-card-id');
 }
 
 const openDeleteConfirmationModal = (title, card) => {
-  const confirm = window.confirm(`Do you want to delete the note "${title}"?`);
-  if (confirm) {
-    card.remove();
-    updateLocalStorage();
-  }
-}
+
+  const actionButtons = Swal.mixin({
+    customClass: {
+      confirmButton:
+        'bg-sky-500 hover:bg-sky-600 text-white px-4 py-2 rounded w-full max-w-md',
+    },
+    buttonsStyling: false,
+  });
+
+
+  Swal.fire({
+    title: `Do you want to delete the note "${title}"?`,
+    showCancelButton: true,
+    confirmButtonColor: '#3b83f6',
+    cancelButtonColor: '#ef4444',
+    confirmButtonText: 'Yes, delete it',
+    cancelButtonText: 'No, cancel',
+  }).then((result) => {
+    if (result.isConfirmed) {
+        actionButtons.fire(
+        'Deleted!',
+        'Your note has been deleted.',
+        'success'
+      )
+      card.remove();
+      updateLocalStorage();
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+      actionButtons.fire(
+        'Cancelled',
+        'Your note has not been deleted :)',
+        'error'
+      );
+    }
+  });
+};
+
 
 const updateLocalStorage = () => {
   const notes = [];
@@ -120,22 +179,20 @@ const updateLocalStorage = () => {
   cards.forEach((card) => {
     const titleElement = card.querySelector('h2');
     const descriptionElement = card.querySelector('p');
-    const isDarkMode = card.classList.contains('dark:bg-gray-900');
     const note = {
       title: titleElement.textContent,
       description: descriptionElement.textContent,
-      isDarkMode: isDarkMode,
     };
     notes.push(note);
   });
   localStorage.setItem('notes', JSON.stringify(notes));
 
   const isDarkMode = document.body.classList.contains('dark');
-  localStorage.setItem('darkMode', JSON.stringify(isDarkMode));
+  localStorage.setItem('isDarkMode', JSON.stringify(isDarkMode));
 }
 
 window.addEventListener('load', () => {
-  const isDarkMode = JSON.parse(localStorage.getItem('darkMode')) || false;
+  const isDarkMode = JSON.parse(localStorage.getItem('isDarkMode')) || false;
   if (isDarkMode) {
     document.body.classList.add('dark');
     const lightIcon = document.querySelector('#lightIcon');
@@ -143,7 +200,7 @@ window.addEventListener('load', () => {
   }
   const existingNotes = JSON.parse(localStorage.getItem('notes')) || [];
   existingNotes.forEach((note) => {
-    const card = createCard(note.title, note.description, note.isDarkMode);
+    const card = createCard(note.title, note.description);
     cardsContainer.appendChild(card);
   });
 });
@@ -152,7 +209,7 @@ darkModeBtn.addEventListener('click', () => {
   const body = document.body;
   body.classList.toggle('dark');
   const isDarkMode = body.classList.contains('dark');
-  saveToLocalStorage(null, null, isDarkMode);
+  localStorage.setItem('isDarkMode', JSON.stringify(isDarkMode));
   const lightIcon = document.querySelector('#lightIcon');
   lightIcon.classList.toggle('hidden');
 });
@@ -160,9 +217,9 @@ darkModeBtn.addEventListener('click', () => {
 const saveToLocalStorage = (title, description, isDarkMode) => {
   const existingNotes = JSON.parse(localStorage.getItem('notes')) || [];
   if (title && description) {
-    existingNotes.push({ title, description, isDarkMode });
+    existingNotes.push({ title, description });
     localStorage.setItem('notes', JSON.stringify(existingNotes));
     return;
   } 
-    localStorage.setItem('darkMode', JSON.stringify(isDarkMode));
+    localStorage.setItem('isDarkMode', JSON.stringify(isDarkMode));
 }

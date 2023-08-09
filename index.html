@@ -22,6 +22,8 @@
   <link rel="shortcut icon" href="/logo.svg" type="image/svg+xml">
   <title>Quick Notes</title>
   <link rel="canonical" href="https://quick-notes-one.vercel.app/">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.css">
+  <link rel="stylesheet" href="./assets/css/style.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -29,8 +31,8 @@
       theme: {
         extend: {
           colors: {
-            'bg-primary-light': '#1b2430',
-            'bg-primary-dark': '#ebe9e0',
+            'primary-dark': '#1b2430',
+            'primary-light': '#f1f1f1',
           },
           fontFamily: {
             sans: ['"Open Sans"', 'sans-serif'],
@@ -41,14 +43,18 @@
   </script>
 </head>
 
-<body class="bg-primary-light dark:bg-primary-dark">
+<body class="min-h-screen h-full w-full bg-primary-light dark:bg-primary-dark">
+  <main class="relative min-h-screen h-full w-full bg-primary-light dark:bg-primary-dark">
 
-  <main class="min-h-screen h-full w-full bg-white dark:bg-gray-800">
     <div class="flex justify-end p-4 shadow-md mb-8">
       <button id="darkModeBtn" class="p-2 focus:outline-none">
         <img src="./assets/img/moon.svg" alt="Tema Light" class="dark:hidden" id="lightIcon">
         <img src="./assets/img/sun.svg" alt="Tema Dark" class="dark:block hidden" id="darkIcon">
       </button>
+      <div id="feedback-container"
+        class="hidden absolute top-15 left-5 md:w-1/4 sm:w-4/5 text-center px-4 py-2 bg-transparent border-2 border-green-500 text-white rounded-md transition-all duration-300">
+        Note added successfully!
+      </div>
     </div>
 
     <div class="container mx-auto p-4">
@@ -58,7 +64,8 @@
 
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4" id="cards-container">
         <div
-          class="bg-sky-500 text-white p-4 rounded-md flex items-center justify-center cursor-pointer hover:bg-sky-600 transition-colors duration-300 sm:h-20 md:h-40" id="plusCard">
+          class="hover:ring-4 hover:ring-sky-400 bg-sky-500 text-white p-4 rounded-md flex items-center justify-center cursor-pointer hover:bg-sky-600 transition-colors duration-300 sm:h-20 md:h-40"
+          id="plusCard">
           <span class="text-4xl font-bold">
             <span class="iconify" data-icon="bx:book-add"></span>
           </span>
@@ -67,24 +74,29 @@
     </div>
 
     <div class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden" id="popup-container">
-      <div class="bg-white dark:bg-gray-900 p-6 rounded-md shadow-md max-w-sm">
-        <h2 class="text-xl font-bold mb-4 text-zinc-900 dark:text-white" id="modal-title">Add</h2>
-        <div class="mb-4">
-          <label for="title" class="block font-semibold text-gray-700 dark:text-gray-300">Title:</label>
-          <input type="text" id="title" class="w-full p-2 border rounded-md bg-white text-zinc-800 dark:bg-gray-800 dark:text-white outline-none focus:ring-2 ring-zinc-500 dark:ring-zinc-100">
+      <div class="relative bg-white dark:bg-gray-800 p-6 rounded-md shadow-lg w-full max-w-xl">
+        <div class="absolute top-3 right-3">
+          <span
+            class="close-modal iconify text-gray-500 dark:text-gray-400 cursor-pointer p-2 group-hover:scale-125 transition-all"
+            data-icon="ep:close-bold"></span>
         </div>
-        <div class="mb-4">
-          <label for="description" class="block font-semibold text-gray-700 dark:text-gray-300">Description:</label>
-          <textarea id="description" class="w-full p-2 border rounded-md bg-white text-zinc-800 dark:bg-gray-800 dark:text-white outline-none focus:ring-2 ring-zinc-500 dark:ring-zinc-100"></textarea>
+        <h2 id="modal-title" class="text-2xl font-semibold mb-4 text-gray-800 dark:text-gray-200">Add/Edit Note</h2>
+        <div class="mb-6">
+          <label for="title" class="block font-semibold text-gray-800 dark:text-gray-200 mb-2">Title:</label>
+          <input placeholder="Enter note title" type="text" id="title"
+            class="w-full px-4 py-3 border rounded-md bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-white outline-none focus:ring-2 ring-sky-400 dark:ring-sky-100">
         </div>
-        <div class="flex items-center justify-between gap-2">
-          <button class="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border-2 border-sky-200 font-semibold text-sky-500 hover:text-white hover:bg-sky-500 hover:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800" id="save-btn">
-            Save
-          </button>
+        <div class="mb-6">
+          <label for="description"
+            class="block font-semibold text-gray-800 dark:text-gray-200 mb-2">Description:</label>
+          <textarea placeholder="Enter note description" id="description"
+            class="w-full px-4 py-3 border rounded-md bg-gray-100 text-gray-800 h-36 resize-none hidden-scrollbar dark:bg-gray-700 dark:text-white outline-none focus:ring-2 ring-sky-400 dark:ring-sky-100"></textarea>
+        </div>
+        <div class="flex justify-end space-x-4">
+          <button id="save-btn"
+            class="px-6 py-3 text-sm font-semibold text-white bg-sky-500 rounded-md hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-400">Save</button>
           <button
-            class="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border-2 border-red-200 font-semibold text-red-500 hover:text-white hover:bg-red-500 hover:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-200 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"  id="close-modal">
-              Close
-          </button>
+            class="close-modal  px-6 py-3 text-sm font-semibold text-red-500 bg-transparent border border-red-300 rounded-md hover:text-white hover:bg-red-500 hover:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-400">Close</button>
         </div>
       </div>
     </div>
@@ -92,6 +104,7 @@
   </main>
 
   <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.all.min.js"></script>
   <script src="./assets/js/script.js"></script>
 
 </body>
