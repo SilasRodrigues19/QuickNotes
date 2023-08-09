@@ -8,16 +8,24 @@ const modalTitle = document.querySelector('#modal-title');
 const noteTitle = document.querySelector('#title');
 const noteDescription = document.querySelector('#description');
 
-function showFeedback() {
+const showFeedback = () => {
   const feedbackContainer = document.querySelector('#feedback-container');
   const feedbackDuration = 3000;
+  const feedbackHideDuration = 5000;
 
-  feedbackContainer.classList.remove('hidden');
+  feedbackContainer.classList.remove('left-[-100%]');
+  feedbackContainer.classList.add('left-5');
 
   setTimeout(() => {
-    feedbackContainer.classList.add('hidden');
+    feedbackContainer.classList.remove('left-5');
+    feedbackContainer.classList.add('left-[-100%]');
+
+    setTimeout(() => {
+      feedbackContainer.classList.add('hidden');
+    }, feedbackHideDuration);
   }, feedbackDuration);
 }
+
 
 plusCard.addEventListener('click', () => {
   popupContainer.classList.remove('hidden');
