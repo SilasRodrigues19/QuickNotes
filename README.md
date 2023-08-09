@@ -103,4 +103,4 @@ Project Link: [https://github.com/SilasRodrigues19/QuickNotes](https://github.co
 [project-link]: https://quick-notes-one.vercel.app/
 
 <br><hr>
-[🔼 Back to top](#Quick-Notes)
+[🔼 Back to top](#quick-notes)
