@@ -1,0 +1,9 @@
+{
+  "name": "Quick Notes",
+  "short_name": "Quick Notes",
+  "theme_color": "#f1f1f1",
+  "background_color": "#1b2430",
+  "display": "browser",
+  "scope": "/",
+  "start_url": "/"
+}
