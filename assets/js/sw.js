@@ -1,6 +1,8 @@
 const CACHE_NAME = 'quick-notes-cache-v1';
 const CACHE_ASSETS = [
-  '/assets/',
+  '/assets/css/style.css',
+  '/assets/icons/logo.png',
+  '/assets/js/script.js',
   '/index.html',
   '/logo.svg',
 ];
