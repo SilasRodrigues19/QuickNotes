@@ -1,8 +1,9 @@
 const CACHE_NAME = 'quick-notes-cache-v1';
 const urlsToCache = [
   '/',
-  '../css/style.css',
-  './script.js'
+  '/index.html',
+  './script.js',
+  '../css/style.css'
 ];
 
 self.addEventListener('install', (event) => {
@@ -23,14 +24,19 @@ self.addEventListener('activate', (event) => {
   const cacheWhitelist = [CACHE_NAME];
 
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (!cacheWhitelist.includes(cacheName)) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
+    caches
+      .keys()
+      .then((cacheNames) => {
+        return Promise.all(
+          cacheNames.map((cacheName) => {
+            if (!cacheWhitelist.includes(cacheName)) {
+              return caches.delete(cacheName);
+            }
+          })
+        );
+      })
+      .then(() => {
+        return self.clients.claim();
+      })
   );
 });

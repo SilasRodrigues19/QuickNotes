@@ -1,9 +1,20 @@
 {
   "name": "Quick Notes",
-  "short_name": "Quick Notes",
+  "short_name": "Quick",
   "description": "Todo list named as quick notes, built with Tailwind and JavaScript.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f1f1f1",
-  "theme_color": "#1b2430"
+  "theme_color": "#1b2430",
+  "orientation": "portrait",
+  "categories": [
+    "Productivity"
+  ],
+  "scope": "./",
+  "related_applications": [
+    {
+      "platform": "web"
+    }
+  ],
+  "prefer_related_applications": true
 }
