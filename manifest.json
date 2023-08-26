@@ -2,7 +2,7 @@
   "name": "Quick Notes",
   "short_name": "Quick",
   "description": "Todo list named as quick notes, built with Tailwind and JavaScript.",
-  "start_url": "/",
+  "start_url": "https://quick-notes-one.vercel.app",
   "display": "standalone",
   "background_color": "#f1f1f1",
   "theme_color": "#1b2430",
