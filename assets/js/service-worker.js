@@ -1,42 +1,37 @@
 const CACHE_NAME = 'quick-notes-cache-v1';
-const urlsToCache = [
-  '/',
+const CACHE_ASSETS = [
+  '/assets/',
   '/index.html',
-  './script.js',
-  '../css/style.css'
+  '/logo.svg',
 ];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(urlsToCache))
-  );
-});
-
-self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches
-      .match(event.request)
-      .then((response) => response || fetch(event.request))
+    (async () => {
+      const cache = await caches.open(CACHE_NAME);
+      cache.addAll(CACHE_ASSETS);
+    })()
   );
 });
 
 self.addEventListener('activate', (event) => {
-  const cacheWhitelist = [CACHE_NAME];
+  event.waitUntil(self.clients.claim());
+});
 
-  event.waitUntil(
-    caches
-      .keys()
-      .then((cacheNames) => {
-        return Promise.all(
-          cacheNames.map((cacheName) => {
-            if (!cacheWhitelist.includes(cacheName)) {
-              return caches.delete(cacheName);
-            }
-          })
-        );
-      })
-      .then(() => {
-        return self.clients.claim();
-      })
-  );
+self.addEventListener('fetch', (event) => {
+  event.respondWith(async () => {
+    const cache = await caches.open(CACHE_NAME);
+
+    // match the request to our cache
+    const cachedResponse = await cache.match(event.request);
+
+    // check if we got a valid response
+    if (cachedResponse !== undefined) {
+      // Cache hit, return the resource
+      return cachedResponse;
+    } else {
+      // Otherwise, go to the network
+      return fetch(event.request);
+    }
+  });
 });
