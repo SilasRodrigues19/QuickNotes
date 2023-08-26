@@ -51,5 +51,5 @@
     }
   ],
   "prefer_related_applications": true,
-  "app_id": "app.vercel.quick-notes-one"
+  "id": "/"
 }
