@@ -35,9 +35,11 @@
     }
   ],
   "launch_handler": {
-    "client_mode":  "auto"
+    "client_mode": ["navigate-existing", "auto"]
   },
   "display_override": [
+    "window-controls-overlay",
+    "standalone",
     "browser"
   ],
   "prefer_related_applications": true,
