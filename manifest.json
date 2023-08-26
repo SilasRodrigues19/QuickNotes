@@ -42,6 +42,14 @@
     "standalone",
     "browser"
   ],
+  "scope_extensions": [
+    {
+      "origin": "https://quick-notes-one.vercel.app/"
+    },
+    {
+      "origin": "*.vercel.app/"
+    }
+  ],
   "prefer_related_applications": true,
   "app_id": "app.vercel.quick-notes-one"
 }
