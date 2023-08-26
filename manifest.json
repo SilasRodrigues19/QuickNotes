@@ -1,15 +1,25 @@
 {
   "name": "Quick Notes",
-  "short_name": "Quick",
+  "short_name": "Notes",
   "description": "Todo list named as quick notes, built with Tailwind and JavaScript.",
-  "start_url": "https://quick-notes-one.vercel.app",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#f1f1f1",
   "theme_color": "#1b2430",
-  "orientation": "portrait",
   "categories": [
-    "Productivity"
+    "tools",
+    "productivity",
+    "utilities"
   ],
+  "icons": [
+    {
+      "src": "./assets/icons/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "start_url": "https://quick-notes-one.vercel.app",
   "scope": "./",
   "related_applications": [
     {
