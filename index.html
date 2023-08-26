@@ -42,7 +42,7 @@
       }
     }
 
-    if (typeof navigator.serviceWorker !== 'undefined') navigator.serviceWorker.register('./assets/js/service-worker.js')
+    if ("serviceWorker" in navigator) navigator.serviceWorker.register('./assets/js/sw.js')
       
   </script>
 </head>

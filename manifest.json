@@ -19,6 +19,14 @@
       "purpose": "any"
     }
   ],
+  "screenshots": [
+    {
+      "src": "./assets/img/screenshots/dark-color-scheme.png",
+      "sizes": "1920x924",
+      "type": "image/png",
+      "platform": "wide"
+    }
+  ],
   "start_url": "https://quick-notes-one.vercel.app",
   "scope": "./",
   "related_applications": [
@@ -26,5 +34,12 @@
       "platform": "web"
     }
   ],
-  "prefer_related_applications": true
+  "launch_handler": {
+    "client_mode":  "auto"
+  },
+  "display_override": [
+    "browser"
+  ],
+  "prefer_related_applications": true,
+  "app_id": "app.vercel.quick-notes-one"
 }
