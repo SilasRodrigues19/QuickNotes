@@ -9,31 +9,44 @@ const CACHE_ASSETS = [
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    (async () => {
-      const cache = await caches.open(CACHE_NAME);
-      cache.addAll(CACHE_ASSETS);
-    })()
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(CACHE_ASSETS))
   );
 });
 
 self.addEventListener('activate', (event) => {
-  event.waitUntil(self.clients.claim());
+  event.waitUntil(
+    caches
+      .keys()
+      .then((cacheNames) => {
+        return Promise.all(
+          cacheNames
+            .filter((name) => name !== CACHE_NAME)
+            .map((name) => caches.delete(name))
+        );
+      })
+      .then(() => self.clients.claim())
+  );
 });
 
 self.addEventListener('fetch', (event) => {
-  event.respondWith(async () => {
-    const cache = await caches.open(CACHE_NAME);
+  event.respondWith(
+    caches.match(event.request).then((cachedResponse) => {
+      if (cachedResponse) {
+        return cachedResponse;
+      }
 
-    // match the request to our cache
-    const cachedResponse = await cache.match(event.request);
+      return fetch(event.request).then((response) => {
+        if (!response || response.status !== 200 || response.type !== 'basic') {
+          return response;
+        }
 
-    // check if we got a valid response
-    if (cachedResponse !== undefined) {
-      // Cache hit, return the resource
-      return cachedResponse;
-    } else {
-      // Otherwise, go to the network
-      return fetch(event.request);
-    }
-  });
+        const responseToCache = response.clone();
+        caches.open(CACHE_NAME).then((cache) => {
+          cache.put(event.request, responseToCache);
+        });
+
+        return response;
+      });
+    })
+  );
 });
