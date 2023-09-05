@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#fff">
+  <meta name="color-scheme" content="light dark">
+  <meta name="author" content="Silas Rodrigues">
+  <meta name="description" content="Política de Privacidade do Quick Notes" />
+  <meta name="keywords" content="política de privacidade, privacidade, Quick Notes">
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Política de Privacidade do Quick Notes" />
+  <meta property="og:description"
+    content="Leia nossa política de privacidade para saber como suas informações são tratadas no Quick Notes." />
+  <meta property="og:url" content="https://quick-notes-one.vercel.app/privacy.html" />
+  <meta property="og:site_name" content="Quick Notes" />
+  <meta property="og:type" content="article" />
+  <meta name="twitter:creator" content="@Jinuye1" />
+  <meta name="twitter:title" content="Política de Privacidade do Quick Notes" />
+  <meta name="twitter:description"
+    content="Leia nossa política de privacidade para saber como suas informações são tratadas no Quick Notes." />
+  <link rel="shortcut icon" href="/logo.svg" type="image/svg+xml">
+  <title>Política de Privacidade do Quick Notes</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="canonical" href="https://quick-notes-one.vercel.app/privacy.html">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.css">
+  <link rel="stylesheet" href="./assets/css/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            'primary-dark': '#1b2430',
+            'primary-light': '#f1f1f1',
+          },
+          fontFamily: {
+            sans: ['"Open Sans"', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="min-h-screen h-full w-full bg-primary-light dark:bg-primary-dark">
+  <main class="relative min-h-screen h-full w-full bg-primary-light dark:bg-primary-dark">
+    <div class="container mx-auto p-4">
+      <h1 class="text-2xl font-bold mb-4 text-zinc-600 font-sans tracking-widest dark:text-zinc-100">
+        Política de Privacidade do Quick Notes
+      </h1>
+    </div>
+
+    <div class="container mx-auto p-4 text-gray-800 dark:text-gray-200">
+      <h2 class="text-xl font-semibold mb-4">1. Informações Gerais</h2>
+      <p>Esta política de privacidade descreve como suas informações pessoais são coletadas, usadas e compartilhadas
+        quando você usa o Quick Notes.</p>
+
+      <h2 class="text-xl font-semibold my-4">2. Coleta de Informações</h2>
+      <p>Coletamos informações que você nos fornece diretamente, como seu nome e endereço de e-mail ao se inscrever no
+        Quick Notes.</p>
+
+      <!-- Adicione mais seções conforme necessário -->
+
+      <h2 class="text-xl font-semibold my-4">3. Uso das Informações</h2>
+      <p>Utilizamos as informações coletadas para fornecer, manter e melhorar o Quick Notes e para proteger nossos
+        usuários.</p>
+
+      <h2 class="text-xl font-semibold my-4">4. Compartilhamento de Informações</h2>
+      <p>Não compartilhamos suas informações pessoais com terceiros, exceto quando necessário para operar o Quick Notes
+        ou cumprir obrigações legais.</p>
+
+      <h2 class="text-xl font-semibold my-4">5. Segurança</h2>
+      <p>Implementamos medidas de segurança para proteger suas informações pessoais e garantir sua privacidade.</p>
+
+      <h2 class="text-xl font-semibold my-4">6. Alterações</h2>
+      <p>Podemos atualizar esta política de privacidade periodicamente. Recomendamos que você revise esta página
+        regularmente para obter as informações mais recentes sobre nossas práticas de privacidade.</p>
+
+      <h2 class="text-xl font-semibold my-4">7. Entre em Contato Conosco</h2>
+      <p>Se tiver alguma dúvida sobre esta política de privacidade, entre em contato conosco pelo e-mail: silasrodrigues.fatec@gmail.com.</p>
+    </div>
+
+    <div class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden" id="popup-container">
+      <div class="relative bg-white dark:bg-gray-800 p-6 rounded-md shadow-lg w-full max-w-xl">
+        <div class="absolute top-3 right-3">
+          <div class="close-modal group absolute top-3 right-3 text-gray-500 dark:text-gray-400 cursor-pointer p-2">
+            <span class="iconify group-hover:scale-125 transition-all" data-icon="ep:close-bold"></span>
+          </div>
+        </div>
+        <h2 id="modal-title" class="text-2xl font-semibold mb-4 text-gray-800 dark:text-gray-200">Add/Edit Note</h2>
+        <div class="mb-6">
+          <label for="title" class="block font-semibold text-gray-800 dark:text-gray-200 mb-2">Title:</label>
+          <input placeholder="Enter note title" type="text" id="title"
+            class="w-full px-4 py-3 border rounded-md bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-white outline-none focus:ring-2 ring-sky-400 dark:ring-sky-100">
+        </div>
+        <div class="mb-6">
+          <label for="description"
+            class="block font-semibold text-gray-800 dark:text-gray-200 mb-2">Description:</label>
+          <textarea placeholder="Enter note description" id="description"
+            class="w-full px-4 py-3 border rounded-md bg-gray-100 text-gray-800 h-36 resize-none hidden-scrollbar dark:bg-gray-700 dark:text-white outline-none focus:ring-2 ring-sky-400 dark:ring-sky-100"></textarea>
+        </div>
+        <div class="flex justify-end space-x-4">
+          <button id="save-btn"
+            class="px-6 py-3 text-sm font-semibold text-white bg-sky-500 rounded-md hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-400">Save</button>
+          <button
+            class="close-modal  px-6 py-3 text-sm font-semibold text-red-500 bg-transparent border border-red-300 rounded-md hover:text-white hover:bg-red-500 hover:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-400">Close</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.all.min.js"></script>
+  <script src="./assets/js/script.js"></script>
+
+</body>
+
+</html>
