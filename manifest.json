@@ -27,7 +27,7 @@
       "platform": "wide"
     }
   ],
-  "start_url": "https://quick-notes-one.vercel.app",
+  "start_url": "/",
   "scope": "./",
   "related_applications": [
     {
