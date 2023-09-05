@@ -1,4 +1,4 @@
-const CACHE_NAME = 'quick-notes-cache-v1';
+const CACHE_NAME = 'quick-notes-cache-v2';
 const CACHE_ASSETS = [
   '/assets/css/style.css',
   '/assets/icons/logo.png',
